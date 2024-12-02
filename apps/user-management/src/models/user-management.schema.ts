@@ -4,7 +4,7 @@ import { AbstractDocument } from '@app/common';
 @Schema({ versionKey: false })
 export class UserManagementDocument extends AbstractDocument {
   @Prop()
-  username: string;
+  email: string;
   @Prop()
   password: string;
   @Prop()
@@ -13,6 +13,10 @@ export class UserManagementDocument extends AbstractDocument {
   createdAt: Date;
   @Prop()
   updatedAt: Date;
+  @Prop()
+  createdBy: string;
+  @Prop()
+  updatedBy: string;
 }
 
 export const UserManagementSchema = SchemaFactory.createForClass(

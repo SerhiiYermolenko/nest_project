@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { Inject } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { UserDTO } from '@app/common';
@@ -8,8 +6,8 @@ import { UserDTO } from '@app/common';
 @Injectable()
 export class DelayedNotificationService {
   constructor(
-    @Inject('NOTIFICATION_SERVICE') private client: ClientProxy,
-    @InjectQueue('notification-queue') private notificationQueue: Queue,
+    @InjectQueue('notification-queue')
+    private readonly notificationQueue: Queue,
   ) {}
 
   async scheduleWelcomeEmail(event: Omit<UserDTO, 'password'>) {

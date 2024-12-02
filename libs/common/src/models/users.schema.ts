@@ -2,7 +2,7 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDocument } from '@app/common';
 
 @Schema({ versionKey: false })
-export class UserManagementDocument extends AbstractDocument {
+export class UsersDocument extends AbstractDocument {
   @Prop()
   email: string;
   @Prop()
@@ -19,6 +19,4 @@ export class UserManagementDocument extends AbstractDocument {
   updatedBy: string;
 }
 
-export const UserManagementSchema = SchemaFactory.createForClass(
-  UserManagementDocument,
-);
+export const UsersSchema = SchemaFactory.createForClass(UsersDocument);

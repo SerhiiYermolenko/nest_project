@@ -7,6 +7,7 @@ import { LoggerModule } from '@app/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { BullModule } from '@nestjs/bull';
 import { EmailService } from './email.service';
+import { NotificationProcessor } from './processors/notification.processor';
 
 @Module({
   imports: [
@@ -14,6 +15,12 @@ import { EmailService } from './email.service';
       isGlobal: true,
       validationSchema: Joi.object({
         PORT: Joi.number().required(),
+        REDIS_HOST: Joi.string().required(),
+        REDIS_PORT: Joi.number().required(),
+        SMTP_HOST: Joi.string().required(),
+        SMTP_PORT: Joi.number().required(),
+        SMTP_USER: Joi.string().required(),
+        SMTP_PASSWORD: Joi.string().required(),
       }),
     }),
     LoggerModule,
@@ -28,17 +35,19 @@ import { EmailService } from './email.service';
         },
       },
     ]),
-    BullModule.forRoot({
-      redis: {
-        host: 'localhost',
-        port: 6379,
-      },
+    BullModule.forRootAsync({
+      useFactory: () => ({
+        redis: {
+          host: process.env.REDIS_HOST,
+          port: parseInt(process.env.REDIS_PORT),
+        },
+      }),
     }),
     BullModule.registerQueue({
       name: 'notification-queue',
     }),
   ],
   controllers: [NotificationsController],
-  providers: [DelayedNotificationService, EmailService],
+  providers: [DelayedNotificationService, EmailService, NotificationProcessor],
 })
 export class NotificationsModule {}

@@ -20,6 +20,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.useGlobalFilters(app.get(Logger));
   await app.startAllMicroservices();
-  await app.listen(configService.get('AUTH_PORT') ?? 3001);
+  await app.listen(configService.get('HTTP_PORT'));
 }
 bootstrap();

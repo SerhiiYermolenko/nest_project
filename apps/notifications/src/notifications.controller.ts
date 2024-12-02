@@ -10,7 +10,7 @@ export class NotificationsController {
   ) {}
 
   @UsePipes(new ValidationPipe())
-  @EventPattern('welcome-email')
+  @EventPattern('schedule-welcome-email')
   async notifyUserAboutRegistration(@Payload() data: UserDTO) {
     await this.delayedNotificationService.scheduleWelcomeEmail(data);
   }
